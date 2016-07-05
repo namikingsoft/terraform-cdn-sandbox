@@ -1,7 +1,7 @@
 Sandbox of Terraform CDN [![CircleCI][circle-badge]][circle-url]
 ========================================
 
-## Seting Environment
+Seting Environment
 ----------------------------------------
 
 ```bash
