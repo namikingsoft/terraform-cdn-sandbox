@@ -1,0 +1,29 @@
+machine:
+  timezone: Asia/Tokyo
+  environment:
+    PATH: $HOME/.terraform:$PATH
+    TERRAFORM_VERSION: 0.6.16
+
+dependencies:
+  cache_directories:
+    - ~/.terraform
+  pre:
+    - |
+      mkdir -p $HOME/.terraform
+      if [ -z "$(ls -A $HOME/.terraform)" ]; then
+        cd $HOME/.terraform
+        curl -LO https://dl.bintray.com/mitchellh/terraform/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
+        curl -LO https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
+        unzip terraform_${TERRAFORM_VERSION}_linux_amd64.zip
+        rm terraform_${TERRAFORM_VERSION}_linux_amd64.zip
+      fi
+
+test:
+  override:
+    - echo 'No test.'
+
+deployment:
+  master:
+    branch: master
+    commands:
+      - echo 'No deploy.'
