@@ -90,7 +90,7 @@ resource "fastly_service_v1" "cdn" {
   backend {
     address = "${aws_s3_bucket.origin.website_endpoint}"
     name    = "AWS S3 hosting"
-    port    = 443
+    port    = 80
   }
 
   gzip {
