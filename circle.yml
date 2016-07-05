@@ -20,7 +20,7 @@ dependencies:
 
 test:
   override:
-    - echo 'No test.'
+    - terraform -v
 
 deployment:
   master:
