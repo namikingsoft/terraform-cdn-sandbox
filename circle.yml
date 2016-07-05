@@ -20,7 +20,7 @@ dependencies:
       terraform remote config \
         -backend=S3 \
         -backend-config="bucket=tfstate.namiking.net" \
-        -backend-config="key=terraform-cdn-sandbo.tfstate"
+        -backend-config="key=terraform-cdn-sandbox.tfstate"
 
 test:
   pre:
