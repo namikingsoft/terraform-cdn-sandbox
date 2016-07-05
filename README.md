@@ -1,4 +1,4 @@
-Sandbox of Terraform CDN
+Sandbox of Terraform CDN [![CircleCI][circle-badge]][circle-url]
 ========================================
 
 ## Seting Environment
@@ -16,3 +16,6 @@ export FASTLY_API_KEY="foobar"
 # export TF_VAR_aws_secret_key="fuga"
 # export TF_VAR_fastly_api_key="foobar"
 ```
+
+[circle-badge]: https://circleci.com/gh/namikingsoft/terraform-cdn-sandbox/tree/master.svg?style=svg
+[circle-url]: https://circleci.com/gh/namikingsoft/terraform-cdn-sandbox/tree/master
