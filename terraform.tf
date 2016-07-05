@@ -2,19 +2,19 @@ variable "name"        { default = "terraform-cdn-sandbox" }
 variable "acl"         { default = "public-read" }
 variable "policy_file" { default = "policy.json.tpl" }
 variable "index"       { default = "index.html" }
-variable "aws_region"  { default = "ap-northeast-1" }
-variable "aws_access_key" {}
-variable "aws_secret_key" {}
-variable "fastly_api_key" {}
+#variable "aws_region"     {}
+#variable "aws_access_key" {}
+#variable "aws_secret_key" {}
+#variable "fastly_api_key" {}
 
 provider "aws" {
-  region     = "${var.aws_region}"
-  access_key = "${var.aws_access_key}"
-  secret_key = "${var.aws_secret_key}"
+  #region     = "${var.aws_region}"
+  #access_key = "${var.aws_access_key}"
+  #secret_key = "${var.aws_secret_key}"
 }
 
 provider "fastly" {
-  api_key    = "${var.fastly_api_key}"
+  #api_key    = "${var.fastly_api_key}"
 }
 
 

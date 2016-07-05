@@ -17,13 +17,23 @@ dependencies:
         unzip terraform_${TERRAFORM_VERSION}_linux_amd64.zip
         rm terraform_${TERRAFORM_VERSION}_linux_amd64.zip
       fi
+      terraform remote config \
+        -backend=S3 \
+        -backend-config="bucket=tfstate.namiking.net" \
+        -backend-config="key=terraform-cdn-sandbox.tfstate"
 
 test:
+  pre:
+    - terraform remote pull
   override:
-    - terraform -v
+    - terraform plan
+  post:
+    - terraform remote push
 
 deployment:
   master:
     branch: master
     commands:
-      - echo 'No deploy.'
+      - terraform remote pull
+      - terraform apply
+      - terraform remote push
