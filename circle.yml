@@ -19,8 +19,8 @@ dependencies:
       fi
       terraform remote config \
         -backend=S3 \
-        -backend-config="terraform-cdn-sandbox-tfstate" \
-        -backend-config="key=terraform.tfstate"
+        -backend-config="bucket=terraform-state" \
+        -backend-config="key=terraform-cdn-sandbo.tfstate"
 
 test:
   pre:
