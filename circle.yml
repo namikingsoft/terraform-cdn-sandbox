@@ -1,39 +1,25 @@
 machine:
   timezone: Asia/Tokyo
   environment:
-    PATH: $HOME/.terraform:$PATH
+    PATH: $HOME/.cabal/bin:$HOME/.terraform:$PATH
     TERRAFORM_VERSION: 0.6.16
 
 dependencies:
   cache_directories:
+    - ~/.cabal/bin
     - ~/.terraform
   pre:
-    - |
-      mkdir -p $HOME/.terraform
-      if [ -z "$(ls -A $HOME/.terraform)" ]; then
-        cd $HOME/.terraform
-        curl -LO https://dl.bintray.com/mitchellh/terraform/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
-        curl -LO https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
-        unzip terraform_${TERRAFORM_VERSION}_linux_amd64.zip
-        rm terraform_${TERRAFORM_VERSION}_linux_amd64.zip
-      fi
-      terraform remote config \
-        -backend=S3 \
-        -backend-config="bucket=tfstate.namiking.net" \
-        -backend-config="key=terraform-cdn-sandbox.tfstate"
+    - script/dependencies.sh
 
 test:
-  pre:
-    - terraform remote pull
   override:
-    - terraform plan
-  post:
-    - terraform remote push
+    - shellcheck script/*
+    - TF_ENV=prd script/terraform.sh plan
+    - TF_ENV=stg script/terraform.sh plan
+    - TF_ENV=dev script/terraform.sh plan
 
 deployment:
   master:
     branch: master
     commands:
-      - terraform remote pull
-      - terraform apply
-      - terraform remote push
+      - TF_ENV=dev script/terraform.sh apply
