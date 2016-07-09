@@ -21,6 +21,7 @@ resource "aws_s3_bucket" "origin" {
   bucket = "${lookup(var.name, var.env)}"
   acl    = "${var.acl}"
   policy = "${template_file.s3_policy.rendered}"
+  force_destroy = true
 
   website {
     index_document = "${var.index}"
@@ -34,6 +35,7 @@ resource "aws_cloudfront_distribution" "cdn" {
   }
 
   enabled             = true
+  retain_on_delete    = true
   comment             = "Terraform CDN Sandbox CloudFront"
   default_root_object = "${var.index}"
 
@@ -98,4 +100,7 @@ resource "fastly_service_v1" "cdn" {
   }
 
   default_host = "${aws_s3_bucket.origin.website_endpoint}"
+  default_ttl  = 86400
+
+  force_destroy = true
 }
