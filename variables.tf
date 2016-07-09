@@ -1,4 +1,4 @@
-variable "app_name" {
+variable "name" {
   default = {
     prd  = "terraform-cdn-sandbox-production"
     stg  = "terraform-cdn-sandbox-staging"
