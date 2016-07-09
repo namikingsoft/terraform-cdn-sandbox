@@ -13,12 +13,12 @@ resource "template_file" "s3_policy" {
   template = "${file(concat(path.module, "/", var.policy_file))}"
 
   vars {
-    bucket_name = "${var.name}"
+    bucket_name = "${lookup(var.name, var.env)}"
   }
 }
 
 resource "aws_s3_bucket" "origin" {
-  bucket = "${var.name}"
+  bucket = "${lookup(var.name, var.env)}"
   acl    = "${var.acl}"
   policy = "${template_file.s3_policy.rendered}"
 
@@ -30,7 +30,7 @@ resource "aws_s3_bucket" "origin" {
 resource "aws_cloudfront_distribution" "cdn" {
   origin {
     domain_name = "${concat(aws_s3_bucket.origin.id, ".s3.amazonaws.com")}"
-    origin_id   = "${var.name}"
+    origin_id   = "${lookup(var.name, var.env)}"
   }
 
   enabled             = true
@@ -71,7 +71,7 @@ resource "aws_cloudfront_distribution" "cdn" {
 }
 
 resource "fastly_service_v1" "cdn" {
-  name = "${var.name}"
+  name = "${lookup(var.name, var.env)}"
 
   domain {
     name    = "${concat(aws_s3_bucket.origin.id, ".global.ssl.fastly.net")}"
