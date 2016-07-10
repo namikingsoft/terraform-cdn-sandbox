@@ -22,10 +22,6 @@ resource "aws_s3_bucket" "origin" {
   acl    = "${var.acl}"
   policy = "${template_file.s3_policy.rendered}"
   force_destroy = true
-
-  website {
-    index_document = "${var.index}"
-  }
 }
 
 resource "aws_cloudfront_distribution" "cdn" {
