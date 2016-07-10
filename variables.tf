@@ -8,7 +8,7 @@ variable "name" {
 }
 
 variable "env"         { default = "dev" }
-variable "acl"         { default = "public-read" }
+variable "acl"         { default = "private" }
 variable "policy_file" { default = "policy.json.tpl" }
 variable "index"       { default = "index.html" }
 #variable "aws_region"     {}
