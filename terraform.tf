@@ -81,7 +81,7 @@ resource "fastly_service_v1" "cdn" {
   }
 
   backend {
-    address = "${aws_s3_bucket.origin.website_endpoint}"
+    address = "${aws_s3_bucket.origin.id}.s3.amazonaws.com"
     name    = "AWS S3 hosting"
     port    = 80
   }
@@ -99,7 +99,7 @@ resource "fastly_service_v1" "cdn" {
     ]
   }
 
-  default_host = "${aws_s3_bucket.origin.website_endpoint}"
+  default_host = "${aws_s3_bucket.origin.id}.s3.amazonaws.com"
   default_ttl  = 86400
 
   force_destroy = true
