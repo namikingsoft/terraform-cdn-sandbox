@@ -21,19 +21,17 @@ resource "aws_s3_bucket" "origin" {
   bucket = "${lookup(var.name, var.env)}"
   acl    = "${var.acl}"
   policy = "${template_file.s3_policy.rendered}"
-
-  website {
-    index_document = "${var.index}"
-  }
+  force_destroy = true
 }
 
 resource "aws_cloudfront_distribution" "cdn" {
   origin {
-    domain_name = "${concat(aws_s3_bucket.origin.id, ".s3.amazonaws.com")}"
+    domain_name = "${aws_s3_bucket.origin.id}.s3.amazonaws.com"
     origin_id   = "${lookup(var.name, var.env)}"
   }
 
   enabled             = true
+  retain_on_delete    = true
   comment             = "Terraform CDN Sandbox CloudFront"
   default_root_object = "${var.index}"
 
@@ -74,12 +72,12 @@ resource "fastly_service_v1" "cdn" {
   name = "${lookup(var.name, var.env)}"
 
   domain {
-    name    = "${concat(aws_s3_bucket.origin.id, ".global.ssl.fastly.net")}"
+    name    = "${aws_s3_bucket.origin.id}.global.ssl.fastly.net"
     comment = "Free Shared TLS"
   }
 
   backend {
-    address = "${aws_s3_bucket.origin.website_endpoint}"
+    address = "${aws_s3_bucket.origin.id}.s3.amazonaws.com"
     name    = "AWS S3 hosting"
     port    = 80
   }
@@ -97,5 +95,8 @@ resource "fastly_service_v1" "cdn" {
     ]
   }
 
-  default_host = "${aws_s3_bucket.origin.website_endpoint}"
+  default_host = "${aws_s3_bucket.origin.id}.s3.amazonaws.com"
+  default_ttl  = 86400
+
+  force_destroy = true
 }
