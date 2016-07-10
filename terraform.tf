@@ -30,7 +30,7 @@ resource "aws_s3_bucket" "origin" {
 
 resource "aws_cloudfront_distribution" "cdn" {
   origin {
-    domain_name = "${concat(aws_s3_bucket.origin.id, ".s3.amazonaws.com")}"
+    domain_name = "${aws_s3_bucket.origin.id}.s3.amazonaws.com"
     origin_id   = "${lookup(var.name, var.env)}"
   }
 
@@ -76,7 +76,7 @@ resource "fastly_service_v1" "cdn" {
   name = "${lookup(var.name, var.env)}"
 
   domain {
-    name    = "${concat(aws_s3_bucket.origin.id, ".global.ssl.fastly.net")}"
+    name    = "${aws_s3_bucket.origin.id}.global.ssl.fastly.net"
     comment = "Free Shared TLS"
   }
 
